@@ -13,6 +13,9 @@ function cleanMessage(text: string) {
   const html = extractHtml(text);
   if (!html) return text;
 
+  return "Website sudah siap. Silakan lihat preview di bawah, lalu salin atau unduh kodenya.";
+}
+
   const withoutCode = text
     .replace(/```html[\s\S]*?```/i, "")
     .replace(/```[\s\S]*?```/g, "")
