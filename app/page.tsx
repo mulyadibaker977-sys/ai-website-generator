@@ -1,6 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
+
+function extractHtml(text: string) {
+  const match = text.match(/```html([\s\S]*?)```/i);
+  if (match) return match[1].trim();
+  if (text.includes("<html") || text.includes("<!DOCTYPE")) return text;
+  return "";
+}
 
 export default function Home() {
   const [messages, setMessages] = useState([
@@ -12,6 +19,12 @@ export default function Home() {
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const latestHtml = useMemo(() => {
+    const lastAi = [...messages].reverse().find((m) => m.role === "assistant");
+    return lastAi ? extractHtml(lastAi.content) : "";
+  }, [messages]);
 
   const handleSend = async () => {
     if (!input.trim() || loading) return;
@@ -52,6 +65,13 @@ export default function Home() {
     }
   };
 
+  const handleCopy = async () => {
+    if (!latestHtml) return;
+    await navigator.clipboard.writeText(latestHtml);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
+
   return (
     <main className="min-h-screen bg-gray-100 flex flex-col">
       <header className="bg-white border-b px-4 py-3 shadow-sm">
@@ -60,7 +80,7 @@ export default function Home() {
         </h1>
       </header>
 
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 max-w-3xl mx-auto w-full">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 max-w-5xl mx-auto w-full">
         {messages.map((msg, index) => (
           <div
             key={index}
@@ -69,7 +89,7 @@ export default function Home() {
             }`}
           >
             <div
-              className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm whitespace-pre-wrap ${
+              className={`max-w-[90%] rounded-2xl px-4 py-3 text-sm whitespace-pre-wrap ${
                 msg.role === "user"
                   ? "bg-blue-600 text-white"
                   : "bg-white text-gray-800 shadow"
@@ -83,14 +103,33 @@ export default function Home() {
         {loading && (
           <div className="flex justify-start">
             <div className="bg-white text-gray-500 shadow rounded-2xl px-4 py-3 text-sm">
-              AI sedang mengetik...
+              AI sedang membuat website...
             </div>
+          </div>
+        )}
+
+        {latestHtml && (
+          <div className="bg-white rounded-xl shadow p-4">
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="font-semibold text-gray-800">Preview Website</h2>
+              <button
+                onClick={handleCopy}
+                className="bg-blue-600 text-white px-4 py-2 rounded-full text-sm"
+              >
+                {copied ? "Tersalin" : "Salin kode"}
+              </button>
+            </div>
+            <iframe
+              title="Website preview"
+              className="w-full h-[520px] border rounded-lg bg-white"
+              srcDoc={latestHtml}
+            />
           </div>
         )}
       </div>
 
       <div className="border-t bg-white p-4">
-        <div className="max-w-3xl mx-auto flex gap-2">
+        <div className="max-w-5xl mx-auto flex gap-2">
           <input
             type="text"
             value={input}
