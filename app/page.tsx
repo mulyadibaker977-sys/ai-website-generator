@@ -6,41 +6,60 @@ export default function Home() {
   const [messages, setMessages] = useState([
     {
       role: "assistant",
-      content: "Halo! Saya AI Website Generator. Ketik permintaan website yang ingin kamu buat, contoh: \"Buatkan landing page untuk toko kue\".",
+      content:
+        "Halo! Saya AI Website Generator. Ketik permintaan website yang ingin kamu buat, contoh: \"Buatkan landing page untuk toko kue\".",
     },
   ]);
   const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSend = () => {
-    if (!input.trim()) return;
+  const handleSend = async () => {
+    if (!input.trim() || loading) return;
 
-    // Tambah pesan user
-    const newMessages = [...messages, { role: "user", content: input }];
+    const userMessage = { role: "user", content: input };
+    const newMessages = [...messages, userMessage];
+
     setMessages(newMessages);
     setInput("");
+    setLoading(true);
 
-    // Simulasi balasan AI (nanti diganti dengan AI sungguhan)
-    setTimeout(() => {
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: newMessages }),
+      });
+
+      const data = await res.json();
+
       setMessages((prev) => [
         ...prev,
         {
           role: "assistant",
-          content: "Terima kasih atas permintaannya! Fitur generate website sedang dalam pengembangan. Nanti saya akan buatkan kodenya di sini.",
+          content: data.reply || data.error || "Maaf, terjadi kesalahan.",
         },
       ]);
-    }, 800);
+    } catch (error) {
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content: "Gagal terhubung ke AI. Coba lagi sebentar.",
+        },
+      ]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <main className="min-h-screen bg-gray-100 flex flex-col">
-      {/* Header */}
       <header className="bg-white border-b px-4 py-3 shadow-sm">
         <h1 className="text-xl font-bold text-gray-800 text-center">
           AI Website Generator
         </h1>
       </header>
 
-      {/* Chat Area */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4 max-w-3xl mx-auto w-full">
         {messages.map((msg, index) => (
           <div
@@ -50,7 +69,7 @@ export default function Home() {
             }`}
           >
             <div
-              className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm ${
+              className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm whitespace-pre-wrap ${
                 msg.role === "user"
                   ? "bg-blue-600 text-white"
                   : "bg-white text-gray-800 shadow"
@@ -60,9 +79,16 @@ export default function Home() {
             </div>
           </div>
         ))}
+
+        {loading && (
+          <div className="flex justify-start">
+            <div className="bg-white text-gray-500 shadow rounded-2xl px-4 py-3 text-sm">
+              AI sedang mengetik...
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* Input Area */}
       <div className="border-t bg-white p-4">
         <div className="max-w-3xl mx-auto flex gap-2">
           <input
@@ -71,13 +97,14 @@ export default function Home() {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSend()}
             placeholder="Ketik permintaan website kamu di sini..."
-           className="flex-1 border border-gray-300 rounded-full px-4 py-3 text-sm text-gray-800 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="flex-1 border border-gray-300 rounded-full px-4 py-3 text-sm text-gray-800 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <button
             onClick={handleSend}
-            className="bg-blue-600 text-white px-6 py-3 rounded-full text-sm font-medium hover:bg-blue-700 transition"
+            disabled={loading}
+            className="bg-blue-600 text-white px-6 py-3 rounded-full text-sm font-medium hover:bg-blue-700 transition disabled:opacity-50"
           >
-            Kirim
+            {loading ? "..." : "Kirim"}
           </button>
         </div>
       </div>
