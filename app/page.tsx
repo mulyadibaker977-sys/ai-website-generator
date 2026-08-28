@@ -9,6 +9,21 @@ function extractHtml(text: string) {
   return "";
 }
 
+function cleanMessage(text: string) {
+  const html = extractHtml(text);
+  if (!html) return text;
+
+  const withoutCode = text
+    .replace(/```html[\s\S]*?```/i, "")
+    .replace(/```[\s\S]*?```/g, "")
+    .trim();
+
+  return (
+    withoutCode ||
+    "Website sudah dibuat. Silakan lihat preview di bawah, atau salin kodenya."
+  );
+}
+
 export default function Home() {
   const [messages, setMessages] = useState([
     {
@@ -95,7 +110,7 @@ export default function Home() {
                   : "bg-white text-gray-800 shadow"
               }`}
             >
-              {msg.content}
+              {msg.role === "assistant" ? cleanMessage(msg.content) : msg.content}
             </div>
           </div>
         ))}
