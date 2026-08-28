@@ -86,7 +86,16 @@ export default function Home() {
     setCopied(true);
     setTimeout(() => setCopied(false), 1500);
   };
-
+  const handleDownload = () => {
+    if (!latestHtml) return;
+    const blob = new Blob([latestHtml], { type: "text/html;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "index.html";
+    a.click();
+    URL.revokeObjectURL(url);
+  };
   return (
     <main className="min-h-screen bg-gray-100 flex flex-col">
       <header className="bg-white border-b px-4 py-3 shadow-sm">
@@ -132,7 +141,12 @@ export default function Home() {
                 className="bg-blue-600 text-white px-4 py-2 rounded-full text-sm"
               >
                 {copied ? "Tersalin" : "Salin kode"}
-              </button>
+              </button>                 <button
+                  onClick={handleDownload}
+                  className="bg-gray-800 text-white px-4 py-2 rounded-full text-sm"
+                >
+                  Unduh HTML
+                </button>
             </div>
             <iframe
               title="Website preview"
