@@ -134,18 +134,23 @@ export default function Home() {
 
         {latestHtml && (
           <div className="bg-white rounded-xl shadow p-4">
-            <div className="flex items-center justify-between mb-3">
+                        <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
               <h2 className="font-semibold text-gray-800">Preview Website</h2>
-              <button
-                onClick={handleCopy}
-                className="bg-blue-600 text-white px-4 py-2 rounded-full text-sm"
-              >
-                {copied ? "Tersalin" : "Salin kode"}
-              </button>                 <button
+              <div className="flex gap-2">
+                <button
+                  onClick={handleCopy}
+                  className="bg-blue-600 text-white px-4 py-2 rounded-full text-sm"
+                >
+                  {copied ? "Tersalin" : "Salin kode"}
+                </button>
+                <button
                   onClick={handleDownload}
                   className="bg-gray-800 text-white px-4 py-2 rounded-full text-sm"
                 >
                   Unduh HTML
+                </button>
+              </div>
+            </div>
                 </button>
             </div>
             <iframe
