@@ -6,31 +6,28 @@ export async function POST(req: Request) {
 
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
-      return NextResponse.json(
-        { error: "GEMINI_API_KEY belum diset" },
-        { status: 500 }
-      );
+      return NextResponse.json({ reply: "GEMINI_API_KEY belum terbaca di Vercel." });
     }
 
     const lastUserMessage =
-      [...messages].reverse().find((m: any) => m.role === "user")?.content ||
-      "Halo";
+      [...messages].reverse().find((m: { role: string; content: string }) => m.role === "user")
+        ?.content || "Halo";
 
-    const prompt = `
-Kamu adalah asisten AI Website Generator.
-Tugasmu membantu user membuat website sederhana.
-Jika user meminta website, buatkan HTML lengkap yang rapi dan siap dipakai.
-Jawab dalam Bahasa Indonesia, kecuali jika user meminta bahasa lain.
+    const prompt = `Kamu adalah asisten AI Website Generator.
+Jika user meminta website, buatkan HTML lengkap yang rapi.
+Jawab dalam Bahasa Indonesia.
 
 Permintaan user:
-${lastUserMessage}
-`;
+${lastUserMessage}`;
 
     const geminiRes = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent",
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-goog-api-key": apiKey,
+        },
         body: JSON.stringify({
           contents: [
             {
@@ -43,15 +40,20 @@ ${lastUserMessage}
 
     const data = await geminiRes.json();
 
-    const text =
-      data?.candidates?.[0]?.content?.parts?.[0]?.text ||
-      "Maaf, AI tidak bisa menjawab saat ini.";
+    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+    if (!text) {
+      return NextResponse.json({
+        reply:
+          "Gemini error: " +
+          JSON.stringify(data?.error || data, null, 2),
+      });
+    }
 
     return NextResponse.json({ reply: text });
   } catch (error) {
-    return NextResponse.json(
-      { error: "Gagal menghubungi AI" },
-      { status: 500 }
-    );
+    return NextResponse.json({
+      reply: "Gagal menghubungi AI: " + String(error),
+    });
   }
 }
