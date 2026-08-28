@@ -147,10 +147,11 @@ export default function Home() {
                 </button>
               </div>
             </div>
-            <iframe
+                       <iframe
               title="Website preview"
               className="w-full h-[520px] border rounded-lg bg-white"
               srcDoc={latestHtml}
+              sandbox="allow-scripts allow-forms"
             />
           </div>
         )}
