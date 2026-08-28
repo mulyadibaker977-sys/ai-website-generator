@@ -16,16 +16,6 @@ function cleanMessage(text: string) {
   return "Website sudah siap. Silakan lihat preview di bawah, lalu salin atau unduh kodenya.";
 }
 
-  const withoutCode = text
-    .replace(/```html[\s\S]*?```/i, "")
-    .replace(/```[\s\S]*?```/g, "")
-    .trim();
-
-  return (
-    withoutCode ||
-    "Website sudah dibuat. Silakan lihat preview di bawah, atau salin kodenya."
-  );
-}
 
 export default function Home() {
   const [messages, setMessages] = useState([
