@@ -175,7 +175,36 @@ export default function Home() {
     a.click();
     URL.revokeObjectURL(url);
   };
+  const handleSave = async () => {
+    if (!latestHtml) return;
+    const token = localStorage.getItem("awg_access_token");
+    if (!token) {
+      alert("Sesi login habis. Masuk ulang.");
+      return;
+    }
 
+    const lastUser = [...messages].reverse().find((m) => m.role === "user");
+
+    const res = await fetch("/api/websites", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        title: lastUser?.content?.slice(0, 60) || "Website",
+        prompt: lastUser?.content || "",
+        html: latestHtml,
+      }),
+    });
+
+    const result = await res.json();
+    if (result.error || result.status >= 400) {
+      alert("Gagal menyimpan: " + (result.error || JSON.stringify(result.data)));
+      return;
+    }
+    alert("Website tersimpan di akun kamu.");
+  };
   if (!userEmail) {
     return (
       <main className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
@@ -264,7 +293,12 @@ export default function Home() {
                   {copied ? "Tersalin" : "Salin kode"}
                 </button>
                 <button onClick={handleDownload} className="bg-gray-800 text-white px-4 py-2 rounded-full text-sm">
-                  Unduh HTML
+                  Unduh HTML                 <button
+                  onClick={handleSave}
+                  className="bg-green-600 text-white px-4 py-2 rounded-full text-sm"
+                >
+                  Simpan
+                </button>
                 </button>
               </div>
             </div>
