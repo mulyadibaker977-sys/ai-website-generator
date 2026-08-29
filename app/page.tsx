@@ -62,27 +62,32 @@ export default function Home() {
     return res.json();
   };
 
-  const handleSignup = async () => {
+    const handleSignup = async () => {
     setAuthError("");
     setAuthLoading(true);
     try {
-      const data = await authRequest("/auth/v1/signup", { email, password });
-      if (data.error || data.msg) {
-        setAuthError(data.error_description || data.msg || data.error || "Gagal daftar");
+      const res = await fetch("/api/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "signup", email, password }),
+      });
+      const result = await res.json();
+      const data = result.data || result;
+
+      if (result.error || data.error || data.msg) {
+        setAuthError(
+          result.error || data.error_description || data.msg || data.error || "Gagal daftar"
+        );
         return;
       }
-      const login = await authRequest("/auth/v1/token?grant_type=password", {
-        email,
-        password,
-      });
-      if (login.access_token) {
-        localStorage.setItem("awg_user_email", email);
-        setUserEmail(email);
-      } else {
+
+      if (data.id || data.user || data.access_token) {
         setAuthError("Pendaftaran berhasil. Silakan klik Masuk.");
+      } else {
+        setAuthError("Respon daftar: " + JSON.stringify(result));
       }
     } catch {
-      setAuthError("Gagal terhubung ke Supabase.");
+      setAuthError("Gagal terhubung ke server.");
     } finally {
       setAuthLoading(false);
     }
@@ -92,19 +97,26 @@ export default function Home() {
     setAuthError("");
     setAuthLoading(true);
     try {
-      const data = await authRequest("/auth/v1/token?grant_type=password", {
-        email,
-        password,
+      const res = await fetch("/api/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "login", email, password }),
       });
+      const result = await res.json();
+      const data = result.data || result;
+
       if (!data.access_token) {
-        setAuthError(data.error_description || data.msg || "Email atau password salah");
+        setAuthError(
+          result.error || data.error_description || data.msg || "Email atau password salah"
+        );
         return;
       }
+
       localStorage.setItem("awg_user_email", email);
       localStorage.setItem("awg_access_token", data.access_token);
       setUserEmail(email);
     } catch {
-      setAuthError("Gagal terhubung ke Supabase.");
+      setAuthError("Gagal terhubung ke server.");
     } finally {
       setAuthLoading(false);
     }
