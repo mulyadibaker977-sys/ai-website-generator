@@ -116,6 +116,7 @@ export default function Home() {
       localStorage.setItem("awg_user_email", email);
       localStorage.setItem("awg_access_token", data.access_token);
       setUserEmail(email);
+      loadSaved();
     } catch {
       setAuthError("Gagal terhubung ke server.");
     } finally {
