@@ -35,13 +35,14 @@ export default function Home() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
-
+  const [savedSites, setSavedSites] = useState<any[]>([]);
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
 
   useEffect(() => {
     const saved = localStorage.getItem("awg_user_email");
     if (saved) setUserEmail(saved);
+       loadSaved();
   }, []);
 
   const latestHtml = useMemo(() => {
@@ -204,7 +205,20 @@ export default function Home() {
       return;
     }
     alert("Website tersimpan di akun kamu.");
+  loadSaved();
+
+};
+
+    const loadSaved = async () => {
+    const token = localStorage.getItem("awg_access_token");
+    if (!token) return;
+    const res = await fetch("/api/websites", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const result = await res.json();
+    if (Array.isArray(result.data)) setSavedSites(result.data);
   };
+  
   if (!userEmail) {
     return (
       <main className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
@@ -311,7 +325,27 @@ export default function Home() {
           </div>
         )}
       </div>
-
+        {savedSites.length > 0 && (
+          <div className="bg-white rounded-xl shadow p-4">
+            <h2 className="font-semibold text-gray-800 mb-3">Website tersimpan</h2>
+            <div className="space-y-2">
+              {savedSites.map((site) => (
+                <button
+                  key={site.id}
+                  onClick={() => {
+                    setMessages((prev) => [
+                      ...prev,
+                      { role: "assistant", content: site.html },
+                    ]);
+                  }}
+                  className="w-full text-left border rounded-xl px-4 py-3 text-sm hover:bg-gray-50"
+                >
+                  {site.title || "Website"}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
       <div className="border-t bg-white p-4">
         <div className="max-w-5xl mx-auto flex gap-2">
           <input
