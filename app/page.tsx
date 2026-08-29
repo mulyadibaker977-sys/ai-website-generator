@@ -339,7 +339,9 @@ export default function Home() {
                       { role: "assistant", content: site.html },
                     ]);
                   }}
-                  className="w-full text-left border rounded-xl px-4 py-3 text-sm hover:bg-gray-50"
+                  className="w-full text-left border rounded-xl px-4 py-3 text-sm text-gray-800
+
+ hover:bg-gray-50"
                 >
                   {site.title || "Website"}
                 </button>
