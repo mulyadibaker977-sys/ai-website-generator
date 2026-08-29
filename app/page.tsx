@@ -219,7 +219,27 @@ export default function Home() {
     const result = await res.json();
     if (Array.isArray(result.data)) setSavedSites(result.data);
   };
-  
+    const handleDelete = async (id: string) => {
+    const token = localStorage.getItem("awg_access_token");
+    if (!token) return;
+    if (!confirm("Hapus website ini?")) return;
+
+    const res = await fetch("/api/websites", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ id }),
+    });
+
+    const result = await res.json();
+    if (result.error) {
+      alert("Gagal menghapus");
+      return;
+    }
+    loadSaved();
+  };
   if (!userEmail) {
     return (
       <main className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
@@ -326,30 +346,35 @@ export default function Home() {
           </div>
         )}
       </div>
-        {savedSites.length > 0 && (
+                {savedSites.length > 0 && (
           <div className="bg-white rounded-xl shadow p-4">
             <h2 className="font-semibold text-gray-800 mb-3">Website tersimpan</h2>
             <div className="space-y-2">
               {savedSites.map((site) => (
-                <button
-                  key={site.id}
-                  onClick={() => {
-                    setMessages((prev) => [
-                      ...prev,
-                      { role: "assistant", content: site.html },
-                    ]);
-                  }}
-                  className="w-full text-left border rounded-xl px-4 py-3 text-sm text-gray-800
-
- hover:bg-gray-50"
-                >
-                  {site.title || "Website"}
-                </button>
+                <div key={site.id} className="flex items-center gap-2">
+                  <button
+                    onClick={() => {
+                      setMessages((prev) => [
+                        ...prev,
+                        { role: "assistant", content: site.html },
+                      ]);
+                    }}
+                    className="flex-1 text-left border rounded-xl px-4 py-3 text-sm text-gray-800 hover:bg-gray-50"
+                  >
+                    {site.title || "Website"}
+                  </button>
+                  <button
+                    onClick={() => handleDelete(site.id)}
+                    className="text-red-600 text-sm px-3 py-3"
+                  >
+                    Hapus
+                  </button>
+                </div>
               ))}
             </div>
           </div>
         )}
-      <div className="border-t bg-white p-4">
+            <div className="border-t bg-white p-4">
         <div className="max-w-5xl mx-auto flex gap-2">
           <input
             type="text"
