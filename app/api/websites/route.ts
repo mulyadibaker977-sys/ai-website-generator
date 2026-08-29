@@ -65,3 +65,31 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: String(error) });
   }
 }
+export async function DELETE(req: Request) {
+  try {
+    const token = req.headers.get("authorization") || "";
+    const { id } = await req.json();
+    const { url, key } = getEnv();
+
+    if (!id) {
+      return NextResponse.json({ error: "ID website tidak ada" });
+    }
+
+    const res = await fetch(`${url}/rest/v1/websites?id=eq.${id}`, {
+      method: "DELETE",
+      headers: {
+        apikey: key,
+        Authorization: token,
+      },
+    });
+
+    if (!res.ok) {
+      const data = await res.json();
+      return NextResponse.json({ error: data });
+    }
+
+    return NextResponse.json({ ok: true });
+  } catch (error) {
+    return NextResponse.json({ error: String(error) });
+  }
+}
