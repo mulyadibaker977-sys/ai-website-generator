@@ -288,16 +288,30 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-gray-100 flex flex-col">
-           <header className="bg-white border-b px-4 py-3 shadow-sm">
+          <header className="bg-white/90 backdrop-blur border-b border-slate-200 px-4 py-3 sticky top-0 z-20">
   <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3">
-    <h1 className="text-xl font-bold text-gray-800">NusaX5</h1>
-    <nav className="flex flex-wrap items-center gap-3 text-sm text-gray-700">
-      <span className="font-medium text-black">Beranda</span>
-      <span>Buat Proyek</span>
-      <span>Proyek Saya</span>
-      <span>Proyek Live</span>
-      <span>Domain</span>
-      <span>Pengaturan</span>
+    <h1 className="text-lg sm:text-xl font-extrabold tracking-tight text-slate-900">
+      Nusa<span className="text-blue-600">X5</span>
+    </h1>
+    <nav className="flex flex-wrap items-center gap-1 text-sm font-medium">
+      <span className="rounded-full bg-slate-900 px-3 py-1.5 text-white shadow-sm">
+        Beranda
+      </span>
+      <span className="rounded-full px-3 py-1.5 text-slate-600 hover:bg-slate-100 hover:text-slate-900 cursor-pointer">
+        Buat Proyek
+      </span>
+      <span className="rounded-full px-3 py-1.5 text-slate-600 hover:bg-slate-100 hover:text-slate-900 cursor-pointer">
+        Proyek Saya
+      </span>
+      <span className="rounded-full px-3 py-1.5 text-slate-600 hover:bg-slate-100 hover:text-slate-900 cursor-pointer">
+        Proyek Live
+      </span>
+      <span className="rounded-full px-3 py-1.5 text-slate-600 hover:bg-slate-100 hover:text-slate-900 cursor-pointer">
+        Domain
+      </span>
+      <span className="rounded-full px-3 py-1.5 text-slate-600 hover:bg-slate-100 hover:text-slate-900 cursor-pointer">
+        Pengaturan
+      </span>
     </nav>
   </div>
 </header>
