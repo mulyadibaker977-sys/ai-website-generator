@@ -304,8 +304,8 @@ export default function Home() {
           onClick={() => setActiveMenu(menu)}
           className={
             activeMenu === menu
-              ? "rounded-full bg-slate-900 px-3 py-1.5 text-white shadow-sm"
-              : "rounded-full px-3 py-1.5 bg-slate-100 text-slate-800 border border-slate-200 hover:bg-slate-200 hover:text-slate-900"
+           ? "rounded-full bg-slate-900 px-3 py-1.5 text-white shadow-sm cursor-pointer"
+         : "rounded-full px-3 py-1.5 bg-slate-100 text-slate-800 border border-slate-200 hover:bg-slate-200 hover:text-slate-900 cursor-pointer"
           }
         >
           {menu}
