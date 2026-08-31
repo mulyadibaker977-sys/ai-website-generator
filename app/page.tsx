@@ -297,19 +297,19 @@ export default function Home() {
       <span className="rounded-full bg-slate-900 px-3 py-1.5 text-white shadow-sm">
         Beranda
       </span>
-      <span className="rounded-full px-3 py-1.5 text-slate-600 hover:bg-slate-100 hover:text-slate-900 cursor-pointer">
+     <span className="rounded-full px-3 py-1.5 bg-slate-100 text-slate-800 border border-slate-200 hover:bg-slate-200 hover:text-slate-900 cursor-pointer">
         Buat Proyek
       </span>
-      <span className="rounded-full px-3 py-1.5 text-slate-600 hover:bg-slate-100 hover:text-slate-900 cursor-pointer">
+      <span className="rounded-full px-3 py-1.5 bg-slate-100 text-slate-800 border border-slate-200 hover:bg-slate-200 hover:text-slate-900 cursor-pointer">
         Proyek Saya
       </span>
-      <span className="rounded-full px-3 py-1.5 text-slate-600 hover:bg-slate-100 hover:text-slate-900 cursor-pointer">
+    <span className="rounded-full px-3 py-1.5 bg-slate-100 text-slate-800 border border-slate-200 hover:bg-slate-200 hover:text-slate-900 cursor-pointer">
         Proyek Live
       </span>
-      <span className="rounded-full px-3 py-1.5 text-slate-600 hover:bg-slate-100 hover:text-slate-900 cursor-pointer">
+     <span className="rounded-full px-3 py-1.5 bg-slate-100 text-slate-800 border border-slate-200 hover:bg-slate-200 hover:text-slate-900 cursor-pointer">
         Domain
       </span>
-      <span className="rounded-full px-3 py-1.5 text-slate-600 hover:bg-slate-100 hover:text-slate-900 cursor-pointer">
+     <span className="rounded-full px-3 py-1.5 bg-slate-100 text-slate-800 border border-slate-200 hover:bg-slate-200 hover:text-slate-900 cursor-pointer">
         Pengaturan
       </span>
     </nav>
