@@ -288,15 +288,19 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-gray-100 flex flex-col">
-            <header className="bg-slate-900 text-white px-4 py-3 flex items-center justify-between">
-        <h1 className="text-lg font-bold">NusaX5</h1>
-        <div className="flex items-center gap-3 text-sm">
-          <span className="text-slate-200">{userEmail}</span>
-          <button onClick={handleLogout} className="text-red-300 hover:text-red-200">
-            Keluar
-          </button>
-        </div>
-      </header>
+           <header className="bg-white border-b px-4 py-3 shadow-sm">
+  <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3">
+    <h1 className="text-xl font-bold text-gray-800">NusaX5</h1>
+    <nav className="flex flex-wrap items-center gap-3 text-sm text-gray-700">
+      <span className="font-medium text-black">Beranda</span>
+      <span>Buat Proyek</span>
+      <span>Proyek Saya</span>
+      <span>Proyek Live</span>
+      <span>Domain</span>
+      <span>Pengaturan</span>
+    </nav>
+  </div>
+</header>
 
       <div className="flex-1 overflow-y-auto p-4 space-y-4 max-w-5xl mx-auto w-full">
         {messages.map((msg, index) => (
