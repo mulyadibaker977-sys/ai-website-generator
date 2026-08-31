@@ -29,7 +29,7 @@ export default function Home() {
     {
       role: "assistant",
       content:
-        "Halo! Saya AI Website Generator. Ketik permintaan website yang ingin kamu buat, contoh: \"Buatkan landing page untuk toko kue\".",
+        "Halo! Saya NusaX5 AI Website Generator. Ketik permintaan website yang ingin kamu buat, contoh: \"Buatkan landing page untuk toko kue\".",
     },
   ]);
   const [input, setInput] = useState("");
@@ -245,7 +245,7 @@ export default function Home() {
             <main className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
         <div className="bg-white w-full max-w-md rounded-2xl shadow-xl p-6">
           <h1 className="text-2xl font-bold text-gray-800 text-center mb-2">
-            AI Website Generator
+            NusaX5
           </h1>
           <p className="text-sm text-gray-500 text-center mb-6">
             Masuk dulu untuk membuat dan menyimpan website.
@@ -289,7 +289,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-gray-100 flex flex-col">
             <header className="bg-slate-900 text-white px-4 py-3 flex items-center justify-between">
-        <h1 className="text-lg font-bold">AI Website Generator</h1>
+        <h1 className="text-lg font-bold">NusaX5</h1>
         <div className="flex items-center gap-3 text-sm">
           <span className="text-slate-200">{userEmail}</span>
           <button onClick={handleLogout} className="text-red-300 hover:text-red-200">
