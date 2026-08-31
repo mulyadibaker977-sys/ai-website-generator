@@ -242,8 +242,8 @@ export default function Home() {
   };
   if (!userEmail) {
     return (
-      <main className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-        <div className="bg-white w-full max-w-md rounded-2xl shadow p-6">
+            <main className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
+        <div className="bg-white w-full max-w-md rounded-2xl shadow-xl p-6">
           <h1 className="text-2xl font-bold text-gray-800 text-center mb-2">
             AI Website Generator
           </h1>
