@@ -288,11 +288,11 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-gray-100 flex flex-col">
-      <header className="bg-white border-b px-4 py-3 shadow-sm flex items-center justify-between">
-        <h1 className="text-lg font-bold text-gray-800">AI Website Generator</h1>
+            <header className="bg-slate-900 text-white px-4 py-3 flex items-center justify-between">
+        <h1 className="text-lg font-bold">AI Website Generator</h1>
         <div className="flex items-center gap-3 text-sm">
-          <span className="text-gray-600">{userEmail}</span>
-          <button onClick={handleLogout} className="text-red-600">
+          <span className="text-slate-200">{userEmail}</span>
+          <button onClick={handleLogout} className="text-red-300 hover:text-red-200">
             Keluar
           </button>
         </div>
