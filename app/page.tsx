@@ -374,7 +374,7 @@ export default function Home() {
             </div>
           </div>
         )}
-            <div className="border-t bg-white p-4">
+                  <div className="border-t bg-slate-900 p-4">
         <div className="max-w-5xl mx-auto flex gap-2">
           <input
             type="text"
@@ -382,12 +382,12 @@ export default function Home() {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSend()}
             placeholder="Ketik permintaan website kamu di sini..."
-            className="flex-1 border border-gray-300 rounded-full px-4 py-3 text-sm text-gray-800 bg-white"
+            className="flex-1 rounded-full px-4 py-3 text-sm text-gray-800 bg-white"
           />
           <button
             onClick={handleSend}
             disabled={loading}
-            className="bg-blue-600 text-white px-6 py-3 rounded-full text-sm disabled:opacity-50"
+            className="bg-blue-500 text-white px-6 py-3 rounded-full text-sm font-medium hover:bg-blue-400 disabled:opacity-50"
           >
             {loading ? "..." : "Kirim"}
           </button>
