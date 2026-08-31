@@ -36,6 +36,8 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
   const [savedSites, setSavedSites] = useState<any[]>([]);
+    const [activeMenu, setActiveMenu] = useState("Beranda");
+  const menus = ["Beranda", "Buat Proyek", "Proyek Saya", "Proyek Live", "Domain", "Pengaturan"];
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
 
@@ -293,26 +295,24 @@ export default function Home() {
     <h1 className="text-lg sm:text-xl font-extrabold tracking-tight text-slate-900">
       Nusa<span className="text-blue-600">X5</span>
     </h1>
-    <nav className="flex flex-wrap items-center gap-1 text-sm font-medium">
-      <span className="rounded-full bg-slate-900 px-3 py-1.5 text-white shadow-sm">
-        Beranda
-      </span>
-     <span className="rounded-full px-3 py-1.5 bg-slate-100 text-slate-800 border border-slate-200 hover:bg-slate-200 hover:text-slate-900 cursor-pointer">
-        Buat Proyek
-      </span>
-      <span className="rounded-full px-3 py-1.5 bg-slate-100 text-slate-800 border border-slate-200 hover:bg-slate-200 hover:text-slate-900 cursor-pointer">
-        Proyek Saya
-      </span>
-    <span className="rounded-full px-3 py-1.5 bg-slate-100 text-slate-800 border border-slate-200 hover:bg-slate-200 hover:text-slate-900 cursor-pointer">
-        Proyek Live
-      </span>
-     <span className="rounded-full px-3 py-1.5 bg-slate-100 text-slate-800 border border-slate-200 hover:bg-slate-200 hover:text-slate-900 cursor-pointer">
-        Domain
-      </span>
-     <span className="rounded-full px-3 py-1.5 bg-slate-100 text-slate-800 border border-slate-200 hover:bg-slate-200 hover:text-slate-900 cursor-pointer">
-        Pengaturan
-      </span>
+
+    activeMenu items-center gap-1 text-sm font-medium">
+      {menus.map((menu) => (
+        <button
+          key={menu}
+          type="button"
+          onClick={() => setActiveMenu(menu)}
+          className={
+            activeMenu === menu
+              ? "rounded-full bg-slate-900 px-3 py-1.5 text-white shadow-sm"
+              : "rounded-full px-3 py-1.5 bg-slate-100 text-slate-800 border border-slate-200 hover:bg-slate-200 hover:text-slate-900"
+          }
+        >
+          {menu}
+        </button>
+      ))}
     </nav>
+  
   </div>
 </header>
 
