@@ -13,11 +13,21 @@ export async function POST(req: Request) {
       [...messages].reverse().find((m: { role: string; content: string }) => m.role === "user")
         ?.content || "Halo";
 
-    const prompt = `Kamu adalah asisten AI Website Generator.
-Jika user meminta website, buatkan HTML lengkap yang rapi.
-Jawab dalam Bahasa Indonesia.
+    const prompt =   `Kamu adalah generator website.
+Tugasmu hanya membuat 1 file HTML lengkap, siap dibuka di browser.
+
+Aturan wajib:
+- Jawaban HANYA kode HTML.
+- Jangan tulis penjelasan, sapaan, atau langkah-langkah.
+- Bungkus kode dalam blok markdown: \`\`\`html ... \`\`\`
+- Mulai dari <!DOCTYPE html> sampai </html>
+- Gunakan Tailwind CSS lewat CDN.
+- Website harus responsif untuk HP dan komputer.
+- Menu hanya tautan #beranda #layanan #kontak.
+- Jangan minta maaf. Jangan tanya balik. Langsung buat website.
 
 Permintaan user:
+
 ${lastUserMessage}`;
 
     const geminiRes = await fetch(
