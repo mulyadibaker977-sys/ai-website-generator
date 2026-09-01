@@ -374,8 +374,6 @@ export default function Home() {
           </div>
         )}
 
-           </>
-        )}
         {savedSites.length > 0 && (
           <div className="bg-white rounded-xl shadow p-4">
             <h2 className="font-semibold text-gray-800 mb-3">Website tersimpan</h2>
