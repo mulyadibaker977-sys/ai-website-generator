@@ -402,7 +402,7 @@ export default function Home() {
             </div>
           </div>
            )}
-      </div>
+    
       <div className="border-t bg-slate-900 p-4">
         <div className="max-w-5xl mx-auto flex gap-2">
           <input
