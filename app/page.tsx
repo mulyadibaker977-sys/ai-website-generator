@@ -373,7 +373,7 @@ export default function Home() {
             />
           </div>
         )}
-      </div>
+
            </>
         )}
         {savedSites.length > 0 && (
