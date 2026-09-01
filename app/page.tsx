@@ -296,7 +296,7 @@ export default function Home() {
       Nusa<span className="text-blue-600">X5</span>
     </h1>
 
-    activeMenu items-center gap-1 text-sm font-medium">
+    <nav className="flex flex-wrap items-center gap-1 text-sm font-medium">
       {menus.map((menu) => (
         <button
           key={menu}
