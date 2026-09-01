@@ -317,6 +317,14 @@ export default function Home() {
 </header>
 
       <div className="flex-1 overflow-y-auto p-4 space-y-4 max-w-5xl mx-auto w-full">
+                {activeMenu !== "Beranda" && activeMenu !== "Buat Proyek" && (
+          <div className="bg-white rounded-xl shadow p-6">
+            <h2 className="text-lg font-semibold text-slate-900">{activeMenu}</h2>
+            <p className="mt-2 text-sm text-slate-600">
+              Bagian {activeMenu} menyusul. Menu sudah aktif.
+            </p>
+          </div>
+        )}
         {messages.map((msg, index) => (
           <div key={index} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
             <div
