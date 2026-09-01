@@ -325,6 +325,8 @@ export default function Home() {
             </p>
           </div>
         )}
+                {(activeMenu === "Beranda" || activeMenu === "Buat Proyek") && (
+          <>
         {messages.map((msg, index) => (
           <div key={index} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
             <div
@@ -372,7 +374,9 @@ export default function Home() {
           </div>
         )}
       </div>
-                {savedSites.length > 0 && (
+           </>
+        )}
+        {savedSites.length > 0 && (
           <div className="bg-white rounded-xl shadow p-4">
             <h2 className="font-semibold text-gray-800 mb-3">Website tersimpan</h2>
             <div className="space-y-2">
