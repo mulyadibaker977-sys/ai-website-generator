@@ -198,6 +198,7 @@ export default function Home() {
     }
     alert("Website tersimpan di akun kamu.");
     loadSaved();
+    setActiveMenu("Proyek Saya");
   };
 
   const loadSaved = async () => {
@@ -232,6 +233,16 @@ export default function Home() {
     loadSaved();
   };
 
+  const openSite = (site: any) => {
+    setMessages([
+      {
+        role: "assistant",
+        content: site.html || "",
+      },
+    ]);
+    setActiveMenu("Buat Proyek");
+  };
+
   if (!userEmail) {
     return (
       <main className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
@@ -257,6 +268,7 @@ export default function Home() {
           {authError && <p className="text-red-600 text-sm mb-3">{authError}</p>}
           <div className="flex gap-2">
             <button
+              type="button"
               onClick={handleLogin}
               disabled={authLoading}
               className="flex-1 bg-blue-600 text-white rounded-full py-3 text-sm"
@@ -264,6 +276,7 @@ export default function Home() {
               Masuk
             </button>
             <button
+              type="button"
               onClick={handleSignup}
               disabled={authLoading}
               className="flex-1 bg-gray-800 text-white rounded-full py-3 text-sm"
@@ -305,38 +318,57 @@ export default function Home() {
       <div className="flex-1 overflow-y-auto p-4 space-y-4 max-w-5xl mx-auto w-full">
         {activeMenu === "Proyek Saya" && (
           <div className="bg-white rounded-xl shadow p-6">
-            <h2 className="text-lg font-semibold text-slate-900">Proyek Saya</h2>
-            <p className="mt-1 mb-4 text-sm text-slate-600">
-              Website yang sudah Anda simpan.
-            </p>
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+              <div>
+                <h2 className="text-lg font-semibold text-slate-900">Proyek Saya</h2>
+                <p className="mt-1 text-sm text-slate-600">
+                  {savedSites.length} website tersimpan
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setActiveMenu("Buat Proyek")}
+                className="rounded-full bg-blue-600 px-4 py-2 text-sm text-white"
+              >
+                Buat baru
+              </button>
+            </div>
+
             {savedSites.length === 0 ? (
               <p className="text-sm text-slate-500">
                 Belum ada proyek tersimpan. Buat di menu Buat Proyek, lalu klik Simpan.
               </p>
             ) : (
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {savedSites.map((site) => (
-                  <div key={site.id} className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setActiveMenu("Buat Proyek");
-                        setMessages((prev) => [
-                          ...prev,
-                          { role: "assistant", content: site.html },
-                        ]);
-                      }}
-                      className="flex-1 text-left border rounded-xl px-4 py-3 text-sm text-gray-800 hover:bg-gray-50"
-                    >
-                      {site.title || "Website"}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleDelete(site.id)}
-                      className="text-red-600 text-sm px-3 py-3"
-                    >
-                      Hapus
-                    </button>
+                  <div
+                    key={site.id}
+                    className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-200 px-4 py-3"
+                  >
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate font-medium text-slate-900">
+                        {site.title || "Website tanpa judul"}
+                      </p>
+                      <p className="truncate text-xs text-slate-500">
+                        {site.prompt || "Tidak ada prompt"}
+                      </p>
+                    </div>
+                    <div className="flex gap-2">
+                      <button
+                        type="button"
+                        onClick={() => openSite(site)}
+                        className="rounded-full bg-slate-900 px-4 py-2 text-sm text-white"
+                      >
+                        Buka
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleDelete(site.id)}
+                        className="rounded-full border border-red-200 px-4 py-2 text-sm text-red-600"
+                      >
+                        Hapus
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>
