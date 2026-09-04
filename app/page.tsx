@@ -45,8 +45,6 @@ export default function Home() {
     "Domain",
     "Pengaturan",
   ];
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
 
   const showChat = activeMenu === "Beranda" || activeMenu === "Buat Proyek";
 
@@ -304,7 +302,8 @@ export default function Home() {
         </div>
       </header>
 
-            {activeMenu === "Proyek Saya" && (
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 max-w-5xl mx-auto w-full">
+        {activeMenu === "Proyek Saya" && (
           <div className="bg-white rounded-xl shadow p-6">
             <h2 className="text-lg font-semibold text-slate-900">Proyek Saya</h2>
             <p className="mt-1 mb-4 text-sm text-slate-600">
@@ -319,6 +318,7 @@ export default function Home() {
                 {savedSites.map((site) => (
                   <div key={site.id} className="flex items-center gap-2">
                     <button
+                      type="button"
                       onClick={() => {
                         setActiveMenu("Buat Proyek");
                         setMessages((prev) => [
@@ -331,6 +331,7 @@ export default function Home() {
                       {site.title || "Website"}
                     </button>
                     <button
+                      type="button"
                       onClick={() => handleDelete(site.id)}
                       className="text-red-600 text-sm px-3 py-3"
                     >
@@ -382,18 +383,21 @@ export default function Home() {
               <h2 className="font-semibold text-gray-800">Preview Website</h2>
               <div className="flex gap-2">
                 <button
+                  type="button"
                   onClick={handleCopy}
                   className="bg-blue-600 text-white px-4 py-2 rounded-full text-sm"
                 >
                   {copied ? "Tersalin" : "Salin kode"}
                 </button>
                 <button
+                  type="button"
                   onClick={handleDownload}
                   className="bg-gray-800 text-white px-4 py-2 rounded-full text-sm"
                 >
                   Unduh HTML
                 </button>
                 <button
+                  type="button"
                   onClick={handleSave}
                   className="bg-green-600 text-white px-4 py-2 rounded-full text-sm"
                 >
@@ -407,36 +411,6 @@ export default function Home() {
               srcDoc={latestHtml}
               sandbox="allow-scripts allow-forms"
             />
-          </div>
-        )}
-
-        {activeMenu === "Proyek Saya" && savedSites.length > 0 && (
-          <div className="bg-white rounded-xl shadow p-4">
-            <h2 className="font-semibold text-gray-800 mb-3">Website tersimpan</h2>
-            <div className="space-y-2">
-              {savedSites.map((site) => (
-                <div key={site.id} className="flex items-center gap-2">
-                  <button
-                    onClick={() => {
-                      setActiveMenu("Buat Proyek");
-                      setMessages((prev) => [
-                        ...prev,
-                        { role: "assistant", content: site.html },
-                      ]);
-                    }}
-                    className="flex-1 text-left border rounded-xl px-4 py-3 text-sm text-gray-800 hover:bg-gray-50"
-                  >
-                    {site.title || "Website"}
-                  </button>
-                  <button
-                    onClick={() => handleDelete(site.id)}
-                    className="text-red-600 text-sm px-3 py-3"
-                  >
-                    Hapus
-                  </button>
-                </div>
-              ))}
-            </div>
           </div>
         )}
       </div>
@@ -453,6 +427,7 @@ export default function Home() {
               className="flex-1 rounded-full px-4 py-3 text-sm text-gray-800 bg-white"
             />
             <button
+              type="button"
               onClick={handleSend}
               disabled={loading}
               className="bg-blue-500 text-white px-6 py-3 rounded-full text-sm font-medium hover:bg-blue-400 disabled:opacity-50"
