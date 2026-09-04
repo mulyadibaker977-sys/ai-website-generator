@@ -6,14 +6,18 @@ export async function POST(req: Request) {
 
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
-      return NextResponse.json({ reply: "GEMINI_API_KEY belum terbaca di Vercel." });
+      return NextResponse.json({
+        reply: "GEMINI_API_KEY belum terbaca di Vercel.",
+      });
     }
 
     const lastUserMessage =
-      [...messages].reverse().find((m: { role: string; content: string }) => m.role === "user")
+      [...messages]
+        .reverse()
+        .find((m: { role: string; content: string }) => m.role === "user")
         ?.content || "Halo";
 
-    const prompt =   `Kamu adalah generator website.
+    const prompt = `Kamu adalah generator website.
 Tugasmu hanya membuat 1 file HTML lengkap, siap dibuka di browser.
 
 Aturan wajib:
@@ -23,7 +27,6 @@ Aturan wajib:
 - Mulai dari <!DOCTYPE html> sampai </html>
 - Gunakan Tailwind CSS lewat CDN.
 - Website harus responsif untuk HP dan komputer.
-- Menu hanya tautan #beranda #layanan #kontak.
 - Jangan minta maaf. Jangan tanya balik. Langsung buat website.
 
 Permintaan user:
@@ -31,7 +34,7 @@ Permintaan user:
 ${lastUserMessage}`;
 
     const geminiRes = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent",
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent",
       {
         method: "POST",
         headers: {
@@ -41,22 +44,29 @@ ${lastUserMessage}`;
         body: JSON.stringify({
           contents: [
             {
+              role: "user",
               parts: [{ text: prompt }],
             },
           ],
+          generationConfig: {
+            temperature: 0.7,
+            maxOutputTokens: 8192,
+          },
         }),
       }
     );
 
     const data = await geminiRes.json();
 
-    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+    const parts = data?.candidates?.[0]?.content?.parts || [];
+    const text = parts
+      .map((part: { text?: string }) => part.text || "")
+      .join("\n")
+      .trim();
 
     if (!text) {
       return NextResponse.json({
-        reply:
-          "Gemini error: " +
-          JSON.stringify(data?.error || data, null, 2),
+        reply: "Gemini error: " + JSON.stringify(data?.error || data, null, 2),
       });
     }
 
