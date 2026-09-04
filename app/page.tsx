@@ -304,8 +304,46 @@ export default function Home() {
         </div>
       </header>
 
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 max-w-5xl mx-auto w-full">
-        {!showChat && (
+            {activeMenu === "Proyek Saya" && (
+          <div className="bg-white rounded-xl shadow p-6">
+            <h2 className="text-lg font-semibold text-slate-900">Proyek Saya</h2>
+            <p className="mt-1 mb-4 text-sm text-slate-600">
+              Website yang sudah Anda simpan.
+            </p>
+            {savedSites.length === 0 ? (
+              <p className="text-sm text-slate-500">
+                Belum ada proyek tersimpan. Buat di menu Buat Proyek, lalu klik Simpan.
+              </p>
+            ) : (
+              <div className="space-y-2">
+                {savedSites.map((site) => (
+                  <div key={site.id} className="flex items-center gap-2">
+                    <button
+                      onClick={() => {
+                        setActiveMenu("Buat Proyek");
+                        setMessages((prev) => [
+                          ...prev,
+                          { role: "assistant", content: site.html },
+                        ]);
+                      }}
+                      className="flex-1 text-left border rounded-xl px-4 py-3 text-sm text-gray-800 hover:bg-gray-50"
+                    >
+                      {site.title || "Website"}
+                    </button>
+                    <button
+                      onClick={() => handleDelete(site.id)}
+                      className="text-red-600 text-sm px-3 py-3"
+                    >
+                      Hapus
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {!showChat && activeMenu !== "Proyek Saya" && (
           <div className="bg-white rounded-xl shadow p-6">
             <h2 className="text-lg font-semibold text-slate-900">{activeMenu}</h2>
             <p className="mt-2 text-sm text-slate-600">
